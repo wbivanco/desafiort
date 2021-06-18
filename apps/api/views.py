@@ -1,15 +1,19 @@
 from django.shortcuts import render
 
-from .services import get_category
+from .services import get_sellers_by_category
 
 
-def ranking_sellers(requests):
+def ranking_sellers(request):
     template_name = "sellers_list.html"
 
-    params = { 'order': 'desc' }
+    params = {  }
+
+    import json
+
+    data = get_sellers_by_category(params)
 
     context = {
-        'name': get_category(params)
+        'res': data
     }
 
-    return render(requests, template_name, context)
+    return render(request, template_name, context)
