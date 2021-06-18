@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Panel de Control</title>
+
+    <link href="{% static 'base/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/font-awesome.css' %}" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="{% static 'base/css/toastr.min.css' %}" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="{% static 'base/css/jquery.gritter.css' %}" rel="stylesheet">
+
+    <link href="{% static 'base/css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/style.css' %}" rel="stylesheet">
+
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+    <!-- JQuery confirm -->
+    <link href="{% static 'base/jquery_confirm/jquery-confirm.min.css' %}" rel="stylesheet">
+
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+
+    <!-- Bootstrap Table -->
+    <!--<link href="{% static 'base/bootstraptable/dist/bootstrap-table.min.css' %}" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+    <!-- Select2 -->
+    <link href="{% static 'base/css/select2.min.css' %}" rel="stylesheet">
+    <style>
+        canvas {
+        height : 500px;
+        width : 500px;
+        border : 2px black solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        {% include 'side_bar.html' %}
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            {% include 'top_bar.html' %}
+
+            {% block contenido %}
+
+            {% endblock contenido %}
+
+        </div>
+        <div class="modal fade" id="popup"></div>
+
+        <script src="{% static 'base/js/efect.js' %}"></script>
+        <!--<script src="{% static 'base/js/jquery.min.js' %}"></script>-->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+        <!-- Mainly scripts -->
+        <script src="{% static 'base/js/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'base/js/popper.min.js' %}"></script>
+        <script src="{% static 'base/js/bootstrap.js' %}"></script>
+        <script src="{% static 'base/js/jquery.metisMenu.js' %}"></script>
+        <script src="{% static 'base/js/jquery.slimscroll.min.js' %}"></script>
+        <!-- Flot -->
+        <script src="{% static 'base/js/jquery.flot.js' %}"></script>
+        <script src="{% static 'base/js/jquery.flot.tooltip.min.js' %}"></script>
+        <script src="{% static 'base/js/jquery.flot.spline.js' %}"></script>
+        <script src="{% static 'base/js/jquery.flot.resize.js' %}"></script>
+        <script src="{% static 'base/js/jquery.flot.pie.js' %}"></script>
+
+        <!-- Peity -->
+        <script src="{% static 'base/js/jquery.peity.min.js' %}"></script>
+        <script src="{% static 'base/js/peity-demo.js' %}"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="{% static 'base/js/inspinia.js' %}"></script>
+        <script src="{% static 'base/js/pace.min.js' %}"></script>
+
+        <!-- jQuery UI -->
+        <script src="{% static 'base/js/jquery-ui.min.js' %}"></script>
+
+        <!-- GITTER -->
+        <script src="{% static 'base/js/jquery.gritter.min.js' %}"></script>
+
+        <!-- Sparkline -->
+        <script src="{% static 'base/js/jquery.sparkline.min.js' %}"></script>
+
+        <!-- Sparkline demo data  -->
+        <script src="{% static 'base/js/sparkline-demo.js' %}"></script>
+
+        <!-- ChartJS-->
+        <script src="{% static 'base/js/Chart.min.js' %}"></script>
+
+        <!--datatable-->
+        <script src="{% static 'base/datatables/datatables.min.js' %}"></script>
+        <!--<script type="text/javascript" src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+
+        <!-- Toastr -->
+        <script src="{% static 'base/js/toastr.min.js' %}"></script>
+
+        <script src="{% static 'base/jquery_confirm/jquery-confirm.min.js' %}"></script>
+
+        <!-- XDSoft DateTimePicker -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+        <!-- Bootstrap Table -->
+        <!--<script src="{% static 'base/bootstraptable/dist/bootstrap-table.min.js' %}"></script>-->
+        <!--<script src="{% static 'base/bootstraptable/dist/bootstrap-table-locale-all.min.js' %}"></script>-->
+        <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table-locale-all.min.js"></script>
+        <!-- Select2 -->
+        <script src="{% static 'base/js/select2.min.js' %}"></script>
+      </div>
+
+    <script>
+    $(document).ready( function () {
+        $('#tabla').DataTable({
+            "order": [[ 0 ,"desc" ]],
+            "language": {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "<span class='fa fa-angle-double-left'></span>",
+                "sLast": "<span class='fa fa-angle-double-right'></span>",
+                "sNext": "<span class='fa fa-angle-right'></span>",
+                "sPrevious": "<span class='fa fa-angle-left'></span>"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+        });
+    });
+    </script>
+</body>
+</html>

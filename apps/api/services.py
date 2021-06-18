@@ -1,0 +1,15 @@
+import requests
+
+def generate_request(url, params={}):
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        return response.json()
+
+def get_category(params={}):
+    response = generate_request('https://api.mercadolibre.com/categories/MLA352679', params)
+    if response:
+       return response
+
+
+    return ''
