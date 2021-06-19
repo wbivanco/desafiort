@@ -11,17 +11,25 @@
         <table width="100%" class="table table-striped table-bordered table-hover" id="tabla">
             <thead>
                 <tr>
-                    <th colspan="2">Listado de Publicaciones</th>
+                    <th colspan="2">Listado de Publicaciones de la categoria MLA352679 (SmartWatch) ordenadas descendentemente con respecto al precio</th>
                 </tr>
             </thead>
             <tbody>
                 {% for data in res %}
                     {% for key, value in data.items %}
                         <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                        </tr>
+                            <td>{{ key|upper }}</td>
 
+                            {% if key == 'enlace' %}
+                                <td><a href="{{ value }}" target="_blank">Ver Producto</a></td>
+                            {% else %}
+                                {% if key == 'precio' %}
+                                    <td>$ {{ value }}</td>
+                                {% else %}
+                                    <td>{{ value }}</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
                     {% endfor %}
                 {% endfor %}
             </tbody>

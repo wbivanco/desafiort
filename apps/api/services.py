@@ -30,7 +30,7 @@ def get_publishings_more_expensive(params={}):
     Obtiene el listado de las publicaciones.
     """
 
-    response = generate_request('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679', params)
+    response = generate_request('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679&sort=price_desc', params)
 
     if response:
         return response

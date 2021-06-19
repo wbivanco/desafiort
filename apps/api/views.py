@@ -30,13 +30,13 @@ def ranking_publishings(request):
 
     for result in data_results:
 
-        row['title'] = result.get('title')
-        row['permalink'] = result.get('permalink')
-        data.append(row)
+        row['titulo'] = result.get('title')
+        row['precio'] = result.get('price')
+        row['enlace'] = result.get('permalink')
+        data.append(row.copy())
 
-    var=1
     context = {
-        'res': data
+        'res': data[:20]
     }
 
     return render(request, template_name, context)
