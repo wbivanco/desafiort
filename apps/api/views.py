@@ -22,13 +22,17 @@ def ranking_publishings(request):
 
     params = { }
 
-    data = {}
+    data = []
+    row = {}
 
     publishings = get_publishings_more_expensive(params)
     data_results = publishings.get('results')
 
     for result in data_results:
-        data['title'] = result.get('title')
+
+        row['title'] = result.get('title')
+        row['permalink'] = result.get('permalink')
+        data.append(row)
 
     var=1
     context = {

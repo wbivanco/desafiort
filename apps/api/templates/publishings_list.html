@@ -8,17 +8,21 @@
     </div>
 
     <div class="panel-body">
-
-
         <table width="100%" class="table table-striped table-bordered table-hover" id="tabla">
             <thead>
                 <tr>
-                    <th>Listado de Publicaciones</th>
+                    <th colspan="2">Listado de Publicaciones</th>
                 </tr>
             </thead>
             <tbody>
-                {% for key, value in res.iteritems %}
-                    <tr>{{ key }} -- {{ value }}</tr>
+                {% for data in res %}
+                    {% for key, value in data.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>
