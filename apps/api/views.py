@@ -15,21 +15,18 @@ def home(request):
 
 def ranking_publishings(request):
     """
-    Muestra el listado de los 5 vendedores que más vendieron en la categoría MLA352679
+    Muestra el listado de la 20 publicaciones más caras en la categoría MLA352679
     """
 
     template_name = "publishings_list.html"
 
-    params = { }
-
     data = []
     row = {}
 
-    publishings = get_publishings_more_expensive(params)
+    publishings = get_publishings_more_expensive()
     data_results = publishings.get('results')
 
     for result in data_results:
-
         row['titulo'] = result.get('title')
         row['precio'] = result.get('price')
         row['enlace'] = result.get('permalink')
@@ -44,14 +41,12 @@ def ranking_publishings(request):
 
 def ranking_sellers(request):
     """
-    Muestra el listado de la 20 punlicaciones más caras en la categoría MLA352679
+    Muestra el listado de los 5 vendedores que más vendieron en la categoría MLA352679
     """
 
     template_name = "sellers_list.html"
 
-    params = { }
-
-    data = get_sellers_by_category(params)
+    data = get_sellers_by_category()
 
     context = {
         'res': data
