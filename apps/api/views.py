@@ -22,8 +22,15 @@ def ranking_publishings(request):
 
     params = { }
 
-    data = get_publishings_more_expensive(params)
+    data = {}
 
+    publishings = get_publishings_more_expensive(params)
+    data_results = publishings.get('results')
+
+    for result in data_results:
+        data['title'] = result.get('title')
+
+    var=1
     context = {
         'res': data
     }
