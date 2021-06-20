@@ -18,7 +18,7 @@ def get_sellers_by_category():
     Obtiene el listado de los vendores.
     """
 
-    response = generate_request('https://api.mercadolibre.com/categories/MLA352679')
+    response = generate_request('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679')
 
     if response:
         return response

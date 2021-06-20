@@ -46,10 +46,18 @@ def ranking_sellers(request):
 
     template_name = "sellers_list.html"
 
-    data = get_sellers_by_category()
+    publishings = get_sellers_by_category()
+    data_results = publishings.get('results')
+
+    seller_ids = []
+
+    for result in data_results:
+        seller_id = result.get('seller').get('id')
+        if seller_id not in seller_ids:
+            seller_ids.append(seller_id)
 
     context = {
-        'res': data
+        'res': seller_ids,
     }
 
     return render(request, template_name, context)
