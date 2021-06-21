@@ -1,7 +1,9 @@
 from django.shortcuts import render
 
-from .services import get_sellers_by_category, get_publishings_more_expensive
+from .services import get_sellers_by_category, get_publishings_more_expensive, get_info_seller
 
+
+#code = TG-60d0901838a5a4000780805f-85614757
 
 def home(request):
     """
@@ -20,12 +22,15 @@ def ranking_publishings(request):
 
     template_name = "publishings_list.html"
 
-    data = []
-    row = {}
+    data = []  # Guardo las publicaciones en una lista que sera pasada al template
+    row = {}  # Guardo el contentido de cada publicación en un diccionario con una estructura que solo contiene los
+    # datos soliccitados y que formará parte de la lista de resultados
 
-    publishings = get_publishings_more_expensive()
-    data_results = publishings.get('results')
+    publishings = get_publishings_more_expensive()  # Traigo info de la categoría y sus publicaciones ordenadas por
+    # precio mas caro
+    data_results = publishings.get('results')  # Obtengo solo los datos de las publicaciones.
 
+    # Recorro cada publicación y cargo solo los datos en la lista que será utilizada en el template
     for result in data_results:
         row['titulo'] = result.get('title')
         row['precio'] = result.get('price')
@@ -46,18 +51,44 @@ def ranking_sellers(request):
 
     template_name = "sellers_list.html"
 
-    publishings = get_sellers_by_category()
-    data_results = publishings.get('results')
+    seller_ids = [] # Guardo los id no repetidos(únicos) de los vendedores de la categoría.
 
-    seller_ids = []
+    # Este for me permite ir iterando en las publicaciones de la categoría para solo guardar en la lista los ids únicos
+    # de cada vendor
+    for i in range(0, 1000, 50):  # Hago for para ir pasando de pagina de a 50
 
-    for result in data_results:
-        seller_id = result.get('seller').get('id')
-        if seller_id not in seller_ids:
-            seller_ids.append(seller_id)
+        publishings = get_sellers_by_category(i)  # Traigo info de la categoría pasando un nuevo valor de offset en
+        # cada iteración, es decir voy saltando de a 50 registros
 
+        data_results = publishings.get('results')  # Guardo solo el conjunto de publicaciones obtenidas
+
+        for result in data_results:  # Itero en cada publicación
+
+            seller_id = result.get('seller').get('id')  # Obtengo el id del vendedor de la publicación
+
+            if seller_id not in seller_ids:  # Verifico si id esta en la lista, sino no esta agrego el id
+                seller_ids.append(seller_id)
+
+    seller = {}
+    ranking_sellers = []
+
+    # Con este for traigo toda la info del vendedor
+    for seller_id in seller_ids:
+        info_seller = get_info_seller(seller_id)
+        seller['nickname'] = info_seller.get('seller').get('nickname')
+        seller['total_pub'] = info_seller.get('paging').get('total')
+        pubs = info_seller.get('results')
+        sold_total = 0
+        for pub in pubs:
+            sold_total = sold_total + pub.get('sold_quantity')
+        seller['sold_total'] = sold_total
+        ranking_sellers.append(seller.copy())
+
+    # sorted_ranking = ranking_sellers.sort(key=lambda x: x['sold_total'], reverse=True)
+    # res = sorted_ranking[:5]
+    a=1
     context = {
-        'res': seller_ids,
+        'data': '',
     }
 
     return render(request, template_name, context)

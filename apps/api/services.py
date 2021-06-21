@@ -13,12 +13,13 @@ def generate_request(url):
         return response.json()
 
 
-def get_sellers_by_category():
+def get_sellers_by_category(offset,limit=50):
     """
-    Obtiene el listado de los vendores.
+    Obtiene el listado de las publicaciones por rango de 50 en la categoria MLA352679.
     """
 
-    response = generate_request('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679')
+    url = 'https://api.mercadolibre.com/sites/MLA/search?category=MLA352679' + '&offset=' + str(offset) + '&limit=' + str(limit)
+    response = generate_request(url)
 
     if response:
         return response
@@ -31,6 +32,18 @@ def get_publishings_more_expensive():
     """
 
     response = generate_request('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679&sort=price_desc')
+
+    if response:
+        return response
+    return ''
+
+
+def get_info_seller(id):
+    """
+    Obtiene la información de un vendedor en la categoría MLA352679.
+    """
+    url = 'https://api.mercadolibre.com/sites/MLA/search?seller_id='+ str(id) +'&category=MLA352679'
+    response = generate_request(url)
 
     if response:
         return response
