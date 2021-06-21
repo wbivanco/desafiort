@@ -42,7 +42,7 @@ def get_info_seller(id):
     """
     Obtiene la información de un vendedor en la categoría MLA352679.
     """
-    url = 'https://api.mercadolibre.com/sites/MLA/search?seller_id='+ str(id) +'&category=MLA352679'
+    url = 'https://api.mercadolibre.com/sites/MLA/search?seller_id=' + str(id) + '&category=MLA352679'
     response = generate_request(url)
 
     if response:

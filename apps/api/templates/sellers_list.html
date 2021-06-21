@@ -6,19 +6,24 @@
     <div class="panel-heading">
         <h3>Listado de los 5 vendedores que mas venden</h3>
     </div>
-
+    <br>
+    <div class="text-center">
+        <a href="javascript:location.reload()" class="btn btn-outline btn-success  dim"><i class="fa fa-refresh"></i> Actualizar página</a>
+    </div>
     <div class="panel-body">
 
         <table width="100%" class="table table-striped table-bordered table-hover" id="tabla">
             <thead>
                 <tr>
-                    <th>ID de Vendedor</th>
+                    <th>Apodo</th>
+                    <th>Total Vendido</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in res %}
+                {% for item in res|dictsort:"sold_total" %}
                 <tr>
-                    <td>{{ item }}</td>
+                    <td>{{ item.nickname }}</td>
+                    <td>{{ item.sold_total }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

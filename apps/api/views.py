@@ -51,7 +51,7 @@ def ranking_sellers(request):
 
     template_name = "sellers_list.html"
 
-    seller_ids = [] # Guardo los id no repetidos(únicos) de los vendedores de la categoría.
+    data_results = []  # Guarda todas las publicaciones de la categoría MLA352679
 
     # Este for me permite ir iterando en las publicaciones de la categoría para solo guardar en la lista los ids únicos
     # de cada vendor
@@ -60,35 +60,45 @@ def ranking_sellers(request):
         publishings = get_sellers_by_category(i)  # Traigo info de la categoría pasando un nuevo valor de offset en
         # cada iteración, es decir voy saltando de a 50 registros
 
-        data_results = publishings.get('results')  # Guardo solo el conjunto de publicaciones obtenidas
+        data_results.extend(publishings.get('results'))  # Guardo solo el conjunto de publicaciones obtenidas
 
-        for result in data_results:  # Itero en cada publicación
+    seller_ids = []  # Guardo los id no repetidos(únicos) de los vendedores de la categoría.
 
-            seller_id = result.get('seller').get('id')  # Obtengo el id del vendedor de la publicación
+    # Este for me permite ir almacenando los id de los vendedores pero dichos id no deben estar repetidos
+    for result in data_results:  # Itero en cada publicación
 
-            if seller_id not in seller_ids:  # Verifico si id esta en la lista, sino no esta agrego el id
-                seller_ids.append(seller_id)
+        seller_id = result.get('seller').get('id')  # Obtengo el id del vendedor de la publicación
 
-    seller = {}
-    ranking_sellers = []
+        if seller_id not in seller_ids:  # Verifico si id esta en la lista, sino no esta agrego el id
+            seller_ids.append(seller_id)
+
+    seller = {}  # Almaceno los datos de un vendedor
+    ranking_sellers = []  # Almaceno los datos de los vendedores que se van a mostar en el template
 
     # Con este for traigo toda la info del vendedor
     for seller_id in seller_ids:
-        info_seller = get_info_seller(seller_id)
+
+        info_seller = get_info_seller(seller_id)  # Obtengo los datos (en ellos las publicaciones) de un vendedor en la
+        # categoría MLA352679
+
         seller['nickname'] = info_seller.get('seller').get('nickname')
-        seller['total_pub'] = info_seller.get('paging').get('total')
-        pubs = info_seller.get('results')
-        sold_total = 0
-        for pub in pubs:
-            sold_total = sold_total + pub.get('sold_quantity')
-        seller['sold_total'] = sold_total
+
+        pubs = info_seller.get('results')  # Obtengo las publicaciones del vendedor en la categoría MLA352679
+
+        # sold_total = 0
+        # for pub in pubs:
+        #     sold_total = sold_total + pub.get('sold_quantity')
+        # seller['sold_total'] = sold_total
+
+        seller['sold_total'] = sum(item["sold_quantity"] for item in pubs)  # Sumo el total de lo vendido en cada
+        # publacición y lo almaceno como total del vendedor en la categoría MLA352679
         ranking_sellers.append(seller.copy())
 
-    # sorted_ranking = ranking_sellers.sort(key=lambda x: x['sold_total'], reverse=True)
-    # res = sorted_ranking[:5]
-    a=1
+    sorted_ranking = sorted(ranking_sellers, key=lambda x: x['sold_total'], reverse=True)  # Con los totales de los
+    # vendedores en la categoría, procedo a ordenar de mayor cantidad vendida a mennor
+
     context = {
-        'data': '',
+        'res': sorted_ranking[:5],
     }
 
     return render(request, template_name, context)
