@@ -1,29 +1,23 @@
-import requests
+
+from .fixtures import get_response
 
 
-def test_no_id_seller_send():
-    headers = {
-        'Accept': '*/*',
-        'User-Agent': 'request',
-    }
+def test_error_idseller():
+    """
+    Verifica si el id del venderor pasado en el endpoint pertecene a un usuario de la plataforma.
+    """
 
-    url = "https://api.mercadolibre.com/sites/MLA/search?category=MLA352679&sort=price_desc"
+    res = get_response('https://api.mercadolibre.com/sites/MLA/search?seller_id=22345342&category=MLA352679')
 
-    response = requests.get(url, headers)
-    valor = response.json()
-    print(valor)
-    assert response.status_code == 200
+    json_data = res.json()
+    assert len(json_data.keys()) == 10
 
 
 def test_reponse_code_200_publishings():
-    headers = {
-        'Accept': '*/*',
-        'User-Agent': 'request',
-    }
+    """
+    Pruebo si esta bien la ruta que paso como parametro.
+    """
 
-    url = "https://api.mercadolibre.com/sites/MLA/search?category=MLA352679&sort=price_desc"
+    res = get_response('https://api.mercadolibre.com/sites/MLA/search?category=MLA352679&sort=price_desc')
 
-    response = requests.get(url, headers)
-    valor = response.json()
-    print(valor)
-    assert response.status_code == 200
+    assert res.status_code == 200
