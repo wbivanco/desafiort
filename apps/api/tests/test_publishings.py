@@ -1,16 +1,25 @@
 
 from .fixtures import get_response
+from apps.api.services import get_publishings_more_expensive
 
 
-def test_error_idseller():
+def test_publishings_ordering():
     """
-    Verifica si el id del venderor pasado en el endpoint pertecene a un usuario de la plataforma.
+    Verifico que el listado de publicaciones este ordenado de mayor a menor por precio.
     """
 
-    res = get_response('https://api.mercadolibre.com/sites/MLA/search?seller_id=22345342&category=MLA352679')
+    publishings = get_publishings_more_expensive()  # Obtengo toda la info de las publicaciones de la categoría
+    data_results = publishings.get('results')  # De toda la data solo tomo las publicaciones
 
-    json_data = res.json()
-    assert len(json_data.keys()) == 10
+    higher = data_results[0].get('price')  # Tomo como valor más alto el pecio del primer registro
+    orderly = True  # Bandera que me indica si la data esta ordenada
+
+    # Recorro la data y verifico si esta ordenada de mayor a menor por precio
+    for result in data_results:
+        if higher < result.get('price'):
+            orderly = False
+
+    assert orderly == True
 
 
 def test_reponse_code_200_publishings():

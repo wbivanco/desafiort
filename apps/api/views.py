@@ -3,8 +3,6 @@ from django.shortcuts import render
 from .services import get_sellers_by_category, get_publishings_more_expensive, get_info_seller
 
 
-#code = TG-60d0901838a5a4000780805f-85614757
-
 def home(request):
     """
     Muestra ver la pantalla de inicio con el menú principal.
