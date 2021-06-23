@@ -68,7 +68,7 @@ def get_token():
     with meli.ApiClient() as api_client:
         # Create an instance of the API class
         api_instance = meli.OAuth20Api(api_client)
-        grant_type = 'refresh_token'  # str
+        grant_type = 'access_token'  # str
         client_id = '6092241007629087'  # Your client_id
         client_secret = '7Y0a0yhLw8c8XZ1OxWVpIbYc6BNX079a'  # Your client_secret
         redirect_uri = 'https://www.mercadolibre.com.ar/'  # Your redirect_uri
