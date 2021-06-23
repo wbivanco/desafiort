@@ -1,2 +1,4 @@
 Django==3.2.4
 requests==2.25.1
+#meli==3.0.0  # pip install git+https://github.com/mercadolibre/python-sdk.git
+

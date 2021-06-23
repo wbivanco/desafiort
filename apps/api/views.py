@@ -1,6 +1,19 @@
+
+from __future__ import print_function
+import time
+import meli
+from meli.rest import ApiException
+from pprint import pprint
+
 from django.shortcuts import render
 
-from .services import get_sellers_by_category, get_publishings_more_expensive, get_info_seller
+from .services import get_sellers_by_category, get_publishings_more_expensive, get_info_seller, get_token
+
+# Defining the host is optional and defaults to https://api.mercadolibre.com
+# See configuration.py for a list of all supported configuration parameters.
+configuration = meli.Configuration(
+    host="https://api.mercadolibre.com"
+)
 
 
 def home(request):
@@ -99,4 +112,30 @@ def ranking_sellers(request):
         'res': sorted_ranking[:5],
     }
 
+    return render(request, template_name, context)
+
+
+def get_category(request):
+
+    template_name = "connect_meli.html"
+
+    # Enter a context with an instance of the API client
+    with meli.ApiClient() as api_client:
+        # Create an instance of the API class
+        api_instance = meli.RestClientApi(api_client)
+        # https://api.mercadolibre.com/categories/MLA352679
+        resource = 'sites/MLA/categories'  # A resource example like items, search, category, etc.
+        token = get_token()
+        access_token = token['access_token']
+    try:
+        # Resource path GET
+        api_response = api_instance.resource_get(resource, access_token)
+        # pprint("View" + api_response)
+
+    except ApiException as e:
+        print("Exception when calling RestClientApi->resource_get: %s\n" % e)
+
+    context = {
+        'res': api_response,
+    }
     return render(request, template_name, context)
